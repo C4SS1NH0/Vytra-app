@@ -1,0 +1,17 @@
+export const colorPalette = {
+  background: '#050816',
+  surface: '#101827',
+  card: '#151F32',
+  cardGlass: 'rgba(21, 31, 50, 0.78)',
+  primary: '#00D9FF',
+  secondary: '#7C3AED',
+  accent: '#A3FF12',
+  textPrimary: '#FFFFFF',
+  textSecondary: '#A1A1AA',
+  border: 'rgba(255,255,255,0.08)',
+  borderStrong: 'rgba(255,255,255,0.16)',
+  overlay: 'rgba(4, 10, 26, 0.72)',
+  shadow: 'rgba(0, 0, 0, 0.35)',
+  success: '#35F2B8',
+  info: '#7DD3FC',
+} as const;
