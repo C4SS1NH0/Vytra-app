@@ -35,4 +35,39 @@ export const worldPinsMock: WorldPinProps[] = [
     totalKm: 87.1,
     sparks: 132,
   },
+  {
+    id: 'pin-4',
+    user: weeklyUsersMock[3],
+    latitude: -19.92,
+    longitude: -43.94,
+    city: 'Belo Horizonte',
+    state: 'MG',
+    country: 'Brasil',
+    totalKm: 79.5,
+    sparks: 118,
+  },
+  {
+    id: 'pin-5',
+    user: weeklyUsersMock[4],
+    latitude: -8.05,
+    longitude: -34.88,
+    city: 'Recife',
+    state: 'PE',
+    country: 'Brasil',
+    totalKm: 74.8,
+    sparks: 109,
+  },
 ];
+
+export const worldCommunityStatsMock = {
+  totalKm: 891,
+  activeRunners: 83,
+};
+
+export const worldWeeklyRunsMock: Record<string, number> = {
+  'user-1': 14,
+  'user-2': 16,
+  'user-3': 15,
+  'user-4': 12,
+  'user-5': 11,
+};

@@ -23,6 +23,7 @@ export default function TabLayout() {
           fontSize: 11,
           fontWeight: '700',
         },
+        tabBarActiveBackgroundColor: 'rgba(0, 217, 255, 0.12)',
       }}>
       {appTabs.map((tab) => (
         <Tabs.Screen

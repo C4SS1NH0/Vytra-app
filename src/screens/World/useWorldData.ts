@@ -1,32 +1,47 @@
-import { weeklyUsersMock, worldPinsMock } from '@/src/data/mocks';
+import {
+  weeklyUsersMock,
+  worldCommunityStatsMock,
+  worldPinsMock,
+  worldWeeklyRunsMock,
+} from '@/src/data/mocks';
 import { PrivacyService, RankingService } from '@/src/domain/services';
-import { formatKm } from '@/src/utils/formatters';
+import { WorldGlobePin, WorldRankingEntry, WorldWeeklyStat } from '@/src/screens/World/types';
 
 const mapPositions = [
-  { mapX: '58%', mapY: '56%' },
-  { mapX: '52%', mapY: '46%' },
-  { mapX: '60%', mapY: '67%' },
+  { mapX: '18%', mapY: '30%', tone: 'secondary' as const },
+  { mapX: '37%', mapY: '42%', tone: 'primary' as const, isPrimary: true, badgeLabel: '+2' },
+  { mapX: '56%', mapY: '34%', tone: 'secondary' as const },
+  { mapX: '70%', mapY: '48%', tone: 'secondary' as const },
+  { mapX: '48%', mapY: '62%', tone: 'primary' as const },
 ] as const;
 
 export function useWorldData() {
-  const ranking = RankingService.getWeeklyRanking(weeklyUsersMock).slice(0, 3);
-  const totalKm = worldPinsMock.reduce((sum, pin) => sum + pin.totalKm, 0);
+  const ranking = RankingService.getWeeklyRanking(weeklyUsersMock).map((user) => ({
+    ...user,
+    weeklyRuns: worldWeeklyRunsMock[user.id] ?? 0,
+  })) as WorldRankingEntry[];
 
   const pins = worldPinsMock.map((pin, index) => ({
     ...pin,
     ...mapPositions[index % mapPositions.length],
-  }));
+  })) as WorldGlobePin[];
 
-  const stats = [
+  const stats: WorldWeeklyStat[] = [
     {
-      label: 'Total de km',
-      value: formatKm(totalKm),
-      helper: 'Quilometragem agregada da comunidade nesta simulacao semanal.',
+      id: 'total-km',
+      label: 'Total corrido',
+      value: `${worldCommunityStatsMock.totalKm} km`,
+      helper: 'Quilometragem somada da comunidade Vytra nesta semana.',
+      icon: 'globe',
+      tone: 'primary',
     },
     {
+      id: 'active-runners',
       label: 'Corredores ativos',
-      value: `${worldPinsMock.length}`,
-      helper: 'Pins visiveis no holograma com localizacao aproximada.',
+      value: `${worldCommunityStatsMock.activeRunners}`,
+      helper: 'Atletas em movimento no radar global sem expor coordenadas exatas.',
+      icon: 'users',
+      tone: 'accent',
     },
   ];
 
@@ -42,7 +57,8 @@ export function useWorldData() {
 
   return {
     pins,
-    ranking,
+    podium: ranking.slice(0, 3),
+    rankingList: ranking.slice(3, 5),
     stats,
     getSafeLocation,
   };
