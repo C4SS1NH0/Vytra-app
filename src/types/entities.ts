@@ -5,6 +5,7 @@ export interface UserProps {
   name: string;
   username: string;
   avatar: string;
+  bio: string;
   city: string;
   state: string;
   country: string;
@@ -15,6 +16,8 @@ export interface UserProps {
   followers: number;
   following: number;
   partners: number;
+  weightKg: number;
+  heightCm: number;
 }
 
 export interface RunProps {
@@ -38,6 +41,7 @@ export interface PostProps {
   likes: number;
   comments: number;
   createdAt: string;
+  locationLabel?: string;
 }
 
 export interface ChallengeProps {
@@ -71,4 +75,13 @@ export interface WorldPinProps {
   country: string;
   totalKm: number;
   sparks: number;
+}
+
+export interface EloProps {
+  id: Identifier;
+  partner: UserProps;
+  weeklyGoalKm: number;
+  currentKm: number;
+  streakWeeks: number;
+  summary: string;
 }

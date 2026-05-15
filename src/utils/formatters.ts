@@ -9,3 +9,14 @@ export function formatCompactNumber(value: number) {
 export function formatKm(value: number) {
   return `${value.toFixed(1)} km`;
 }
+
+export function formatDurationMinutes(value: number) {
+  const hours = Math.floor(value / 60);
+  const minutes = value % 60;
+
+  if (hours <= 0) {
+    return `${minutes} min`;
+  }
+
+  return `${hours}h ${minutes.toString().padStart(2, '0')}min`;
+}

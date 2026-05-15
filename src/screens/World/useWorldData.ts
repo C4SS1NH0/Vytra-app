@@ -1,11 +1,8 @@
-import {
-  weeklyUsersMock,
-  worldCommunityStatsMock,
-  worldPinsMock,
-  worldWeeklyRunsMock,
-} from '@/src/data/mocks';
+import { MockWorldRepository } from '@/src/data/repositories';
 import { PrivacyService, RankingService } from '@/src/domain/services';
 import { WorldGlobePin, WorldRankingEntry, WorldWeeklyStat } from '@/src/screens/World/types';
+
+const worldRepository = new MockWorldRepository();
 
 const mapPositions = [
   { mapX: '18%', mapY: '30%', tone: 'secondary' as const },
@@ -16,12 +13,17 @@ const mapPositions = [
 ] as const;
 
 export function useWorldData() {
-  const ranking = RankingService.getWeeklyRanking(weeklyUsersMock).map((user) => ({
+  const weeklyUsers = worldRepository.getWeeklyUsers();
+  const weeklyRuns = worldRepository.getWeeklyRuns();
+  const communityStats = worldRepository.getCommunityStats();
+  const pinsSource = worldRepository.getPins();
+
+  const ranking = RankingService.getWeeklyRanking(weeklyUsers).map((user) => ({
     ...user,
-    weeklyRuns: worldWeeklyRunsMock[user.id] ?? 0,
+    weeklyRuns: weeklyRuns[user.id] ?? 0,
   })) as WorldRankingEntry[];
 
-  const pins = worldPinsMock.map((pin, index) => ({
+  const pins = pinsSource.map((pin, index) => ({
     ...pin,
     ...mapPositions[index % mapPositions.length],
   })) as WorldGlobePin[];
@@ -30,7 +32,7 @@ export function useWorldData() {
     {
       id: 'total-km',
       label: 'Total corrido',
-      value: `${worldCommunityStatsMock.totalKm} km`,
+      value: `${communityStats.totalKm} km`,
       helper: 'Quilometragem somada da comunidade Vytra nesta semana.',
       icon: 'globe',
       tone: 'primary',
@@ -38,7 +40,7 @@ export function useWorldData() {
     {
       id: 'active-runners',
       label: 'Corredores ativos',
-      value: `${worldCommunityStatsMock.activeRunners}`,
+      value: `${communityStats.activeRunners}`,
       helper: 'Atletas em movimento no radar global sem expor coordenadas exatas.',
       icon: 'users',
       tone: 'accent',
@@ -46,7 +48,7 @@ export function useWorldData() {
   ];
 
   function getSafeLocation(pinId: string) {
-    const pin = worldPinsMock.find((item) => item.id === pinId);
+    const pin = pinsSource.find((item) => item.id === pinId);
 
     if (!pin) {
       return '';
